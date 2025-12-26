@@ -56,13 +56,12 @@ body, html {
     border-radius: 10px;
 }
 
-
 /* Typography */
 .main-title, .title-isi {
     font-family: 'Great Vibes', cursive;
     font-size: 3rem;
     color: #b57386;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 .celebrant-name {
@@ -97,8 +96,8 @@ body, html {
     font-family: 'Playfair Display', serif;
     font-style: italic;
     color: #5d4048;
-    font-size: 0.95rem;
-    margin-bottom: 5px;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
 }
 
 .event-details {
@@ -211,5 +210,4 @@ body, html {
 .comment-display::-webkit-scrollbar-thumb {
     background: #e8a0b5;
     border-radius: 10px;
-
 }
