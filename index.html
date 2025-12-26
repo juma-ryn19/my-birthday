@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Ulang Tahun Pink</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="coverPage" class="full-page cover">
+        <div class="overlay"></div>
+        <div class="content-box" data-aos="zoom-in" data-aos-duration="1500">
+            <p class="top-text">YOU ARE INVITED TO</p>
+            <h1 class="main-title">Sweet Celebration</h1>
+            <p class="celebrant-name">JUMA</p>
+            <button id="openBtn" class="btn-primary">
+                <i class="fas fa-envelope-open-text"></i> Buka Undangan
+            </button>
+        </div>
+    </div>
+
+    <div id="mainPage" class="full-page main hidden">
+        <div class="overlay"></div>
+        
+        <audio id="bgMusic" loop>
+            <source src="music.mp3" type="audio/mpeg">
+        </audio>
+
+        <div class="content-box scrollable" data-aos="fade-up" data-aos-duration="1200">
+            <h2 class="title-isi">Hello, Temen temen</h2>
+            
+            <div class="photo-wrapper">
+                <img src="foto1.jpeg" alt="Birthday Girl" class="profile-img">
+            </div>
+
+            <div class="words">
+                <p>"hmmmm... bisa ga nih temenin aku hehe"</p>
+                <p>coba kalian bisa komen aturin mau gimana</p>
+                <p>oh yaa ga usah ada patungan ya, biar aku aja yang beli kue/snacknya</p>
+            </div>
+
+            <div class="event-details">
+                <div class="info-item">
+                    <i class="far fa-calendar-alt"></i>
+                    <p>Rabu, 31 Desember 2025</p>
+                </div>
+                <div class="info-item">
+                    <i class="far fa-clock"></i>
+                    <p>13.00 WIB - Selesai</p>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p>Mako Cake & Bakery, Serang</p>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+<div class="comment-section">
+    <p class="comment-title">Kirim Pesan & Doa</p>
+    <input type="text" id="guestName" placeholder="Nama Anda" class="input-field">
+    <textarea id="guestMsg" placeholder="Tulis ucapan..." class="input-field" rows="3"></textarea>
+    <button onclick="sendComment()" id="submitBtn" class="btn-primary">Kirim Ucapan</button>
+</div>
+
+<div id="commentDisplay" class="comment-display">
+    <p style="text-align:center; font-size:0.8rem;">Memuat ucapan...</p>
+</div>
+
+<script>
+    // GANTI DENGAN URL EXEC BARU KAMU
+const scriptURL = 'https://script.google.com/macros/s/AKfycbxktEImM_R_k0hEE5L1vS01eHtlwWqsTuxMKETRJ1pgDRzWttHzDh1KgBGp25LAv8U7/exec'; 
+
+async function loadComments() {
+    const display = document.getElementById('commentDisplay');
+    try {
+        // Mengambil data dengan mode cors
+        const response = await fetch(scriptURL);
+        if (!response.ok) throw new Error('Network response was not ok');
+        
+        const data = await response.json();
+        display.innerHTML = ''; 
+
+        if (!data || data.length === 0) {
+            display.innerHTML = '<p style="text-align:center; font-size:0.8rem;">Belum ada ucapan.</p>';
+            return;
+        }
+
+        data.reverse().forEach(row => {
+            if(row[0] && row[1]) {
+                const div = document.createElement('div');
+                div.className = 'single-comment';
+                div.innerHTML = `<strong>${row[0]}</strong>: ${row[1]}`;
+                display.appendChild(div);
+            }
+        });
+    } catch (error) {
+        console.error('Fetch error:', error);
+        display.innerHTML = '<p style="text-align:center; font-size:0.8rem; color:red;">Gagal memuat ucapan. Pastikan URL benar.</p>';
+    }
+}
+
+// Pastikan fungsi dipanggil saat halaman terbuka
+document.addEventListener('DOMContentLoaded', () => {
+    // Beri jeda sebentar agar AOS atau elemen lain siap
+    setTimeout(loadComments, 500);
+});
+</script>
+            
+            <p class="closing">Sampai jumpa di sana!</p>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+        
+        const openBtn = document.getElementById('openBtn');
+        const coverPage = document.getElementById('coverPage');
+        const mainPage = document.getElementById('mainPage');
+        const music = document.getElementById('bgMusic');
+
+        openBtn.addEventListener('click', () => {
+            coverPage.classList.add('slide-up'); // Efek transisi ke atas
+            music.play();
+            setTimeout(() => {
+                coverPage.style.display = 'none';
+                mainPage.classList.remove('hidden');
+                AOS.refresh();
+            }, 800);
+        });
+    </script>
+</body>
+</html>
