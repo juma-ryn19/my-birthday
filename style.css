@@ -33,14 +33,29 @@ body, html {
 .content-box {
     position: relative;
     z-index: 2;
-    background: rgba(255, 255, 255, 0.85);
-    padding: 40px 25px;
+    background: rgba(255, 255, 255, 0.9); /* Sedikit lebih tebal agar teks terbaca saat di-scroll */
+    padding: 30px 20px;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(232, 160, 181, 0.3);
-    width: 100%;
+    width: 90%;
     max-width: 400px;
     border: 1px solid #e8a0b5;
+
+    /* TAMBAHKAN INI */
+    max-height: 100vh; /* Kotak tidak akan melebihi 85% tinggi layar HP */
+    overflow-y: auto;  /* Munculkan scroll jika konten penuh */
+    overflow-x: hidden;
 }
+
+/* Opsional: Mempercantik tampilan scrollbar di dalam kotak */
+.content-box::-webkit-scrollbar {
+    width: 5px;
+}
+.content-box::-webkit-scrollbar-thumb {
+    background: #e8a0b5;
+    border-radius: 10px;
+}
+
 
 /* Typography */
 .main-title, .title-isi {
@@ -196,4 +211,5 @@ body, html {
 .comment-display::-webkit-scrollbar-thumb {
     background: #e8a0b5;
     border-radius: 10px;
+
 }
