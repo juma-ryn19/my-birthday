@@ -3,11 +3,6 @@
 * {
     margin: 0; padding: 0; box-sizing: border-box;
 }
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&family=Playfair+Display:ital@1&display=swap');
-
-* {
-    margin: 0; padding: 0; box-sizing: border-box;
-}
 
 body, html {
     height: 100%;
@@ -427,6 +422,7 @@ body, html {
     background: #e8a0b5;
     border-radius: 10px;
 }
+
 
 
 
