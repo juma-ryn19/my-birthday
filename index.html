@@ -72,42 +72,64 @@
 
 <script>
     // GANTI DENGAN URL EXEC BARU KAMU
-const scriptURL = 'https://script.google.com/macros/s/AKfycbxktEImM_R_k0hEE5L1vS01eHtlwWqsTuxMKETRJ1pgDRzWttHzDh1KgBGp25LAv8U7/exec'; 
+const scriptURL = 'https://script.google.com/macros/s/AKfycbxHPbUUzqliMZH4Q8yUqF577E3PWSSiVWAQ2gesH72X4f7Krtnr3g1J5G0jgWpsVm-v/exec';
 
-async function loadComments() {
+// Fungsi memuat komentar (Teknik JSONP)
+function loadComments() {
     const display = document.getElementById('commentDisplay');
-    try {
-        // Mengambil data dengan mode cors
-        const response = await fetch(scriptURL);
-        if (!response.ok) throw new Error('Network response was not ok');
-        
-        const data = await response.json();
-        display.innerHTML = ''; 
-
-        if (!data || data.length === 0) {
+    const script = document.createElement('script');
+    
+    // Kita buat fungsi callback global agar bisa ditangkap datanya
+    window.handleData = function(data) {
+        display.innerHTML = '';
+        if (data.length === 0) {
             display.innerHTML = '<p style="text-align:center; font-size:0.8rem;">Belum ada ucapan.</p>';
             return;
         }
-
         data.reverse().forEach(row => {
-            if(row[0] && row[1]) {
-                const div = document.createElement('div');
-                div.className = 'single-comment';
-                div.innerHTML = `<strong>${row[0]}</strong>: ${row[1]}`;
-                display.appendChild(div);
-            }
+            const div = document.createElement('div');
+            div.className = 'single-comment';
+            div.innerHTML = `<strong>${row[0]}</strong>: ${row[1]}`;
+            display.appendChild(div);
         });
-    } catch (error) {
-        console.error('Fetch error:', error);
-        display.innerHTML = '<p style="text-align:center; font-size:0.8rem; color:red;">Gagal memuat ucapan. Pastikan URL benar.</p>';
+        document.body.removeChild(script); // Bersihkan sisa script
+    };
+
+    script.src = scriptURL + '?callback=handleData&t=' + new Date().getTime();
+    document.body.appendChild(script);
+}
+
+// Fungsi mengirim komentar
+function sendComment() {
+    const name = document.getElementById('guestName').value;
+    const msg = document.getElementById('guestMsg').value;
+    const btn = document.getElementById('submitBtn');
+
+    if(name && msg) {
+        btn.disabled = true;
+        btn.innerText = "Mengirim...";
+
+        // Mengirim lewat elemen <img> atau fetch no-cors agar tidak terblokir
+        fetch(`${scriptURL}?name=${encodeURIComponent(name)}&message=${encodeURIComponent(msg)}`, {
+            method: 'POST',
+            mode: 'no-cors'
+        }).then(() => {
+            alert('Ucapan terkirim!');
+            btn.disabled = false;
+            btn.innerText = "Kirim Ucapan";
+            document.getElementById('guestName').value = '';
+            document.getElementById('guestMsg').value = '';
+            setTimeout(loadComments, 1500); // Muat ulang setelah 1.5 detik
+        }).catch(() => {
+            alert('Terjadi kesalahan, coba lagi.');
+            btn.disabled = false;
+        });
+    } else {
+        alert('Isi nama dan pesan ya!');
     }
 }
 
-// Pastikan fungsi dipanggil saat halaman terbuka
-document.addEventListener('DOMContentLoaded', () => {
-    // Beri jeda sebentar agar AOS atau elemen lain siap
-    setTimeout(loadComments, 500);
-});
+document.addEventListener('DOMContentLoaded', loadComments);
 </script>
             
             <p class="closing">Sampai jumpa di sana!</p>
@@ -134,4 +156,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     </script>
 </body>
+
 </html>
